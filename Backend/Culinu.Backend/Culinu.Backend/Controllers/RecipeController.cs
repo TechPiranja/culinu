@@ -23,10 +23,10 @@ namespace Culinu.Backend.Controllers
             {
                 return NotFound();
             }
-            var section = _context.Recipes.Include(s => s.Ingredients);
 
             return await _context.Recipes
-                .Include(s => s.Ingredients)
+                .Include(x => x.Ingredients)
+                .Include(x => x.Descriptions)
                 .ToListAsync();
         }
 
