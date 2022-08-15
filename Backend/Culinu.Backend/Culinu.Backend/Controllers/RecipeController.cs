@@ -17,17 +17,17 @@ namespace Culinu.Backend.Controllers
 
         // GET: api/Recipe
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RecipeModel>>> GetRecipes()
+        public ActionResult<IEnumerable<RecipeModel>> GetRecipes()
         {
             if (_context.Recipes == null)
             {
                 return NotFound();
             }
 
-            return await _context.Recipes
+            return _context.Recipes
                 .Include(x => x.Ingredients)
-                .Include(x => x.Descriptions)
-                .ToListAsync();
+                .Include(x => x.Descriptions.OrderBy(x => x.Id))
+                .ToList();
         }
 
         // GET: api/Recipe/5
