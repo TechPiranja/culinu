@@ -29,7 +29,11 @@ namespace Culinu.Backend.Controllers
             {
                 return NotFound();
             }
-            return await _context.Recipes.ToListAsync();
+            var section = _context.Recipes.Include(s => s.Ingredients);
+            
+            return await _context.Recipes
+                .Include(s => s.Ingredients)
+                .ToListAsync();
         }
 
         // GET: api/Recipe/5
