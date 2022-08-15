@@ -25,11 +25,28 @@ export default function RecipeDetail() {
 				{!selectedRecipe.name?.length ? (
 					<Typography style={{ margin: 10, textAlign: "center", color: "grey" }}>No recipe selected</Typography>
 				) : (
-					<div style={{ margin: 10 }}>
-						<Typography style={{ fontWeight: "bold" }}>Ingredients:</Typography>
-						{selectedRecipe.ingredients.map((item: any) => (
-							<Typography>{item.name}</Typography>
-						))}
+					<div style={{ margin: 10, display: "flex", gap: 20, flexDirection: "column" }}>
+						<div>
+							<Typography style={{ fontWeight: "bold" }}>Ingredients:</Typography>
+							<ul>
+								{selectedRecipe.ingredients.map((item: any) => (
+									<li>
+										<Typography>{item.amount + " " + item.unit + " " + item.name}</Typography>
+									</li>
+								))}
+							</ul>
+						</div>
+						<div>
+							<Typography style={{ fontWeight: "bold" }}>Description:</Typography>
+							<ol>
+								{selectedRecipe?.descriptions?.map((item): any => (
+									<li>
+										<Typography>{item.description}</Typography>
+									</li>
+								))}
+							</ol>
+						</div>
+
 						{/* <Typography>Description:</Typography> */}
 					</div>
 				)}

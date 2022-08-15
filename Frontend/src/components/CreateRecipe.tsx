@@ -5,19 +5,12 @@ import MyDialog from "./MyDialog";
 import { defaultService } from "../services/api";
 import { updateRecipes } from "../redux/slices/recipeSlice";
 import { useDispatch } from "react-redux";
-
-type Ingredient = {
-	name: string;
-};
-
-type Recipe = {
-	name: string;
-	ingredients: Ingredient[];
-};
+import { Ingredient, Description } from "../types/recipe";
 
 export default function CreateRecipe() {
 	const [ingredients, setIngredients] = useState<Ingredient[]>([]);
 	const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>([]);
+	const [description, setDescription] = useState<Description[]>([]);
 	const [recipe, setRecipe] = useState<string>();
 	const [open, setOpen] = useState(false);
 	const [error, setError] = useState(false);
@@ -31,6 +24,7 @@ export default function CreateRecipe() {
 				await defaultService
 					.create("Recipe", {
 						name: recipe,
+						descriptions: description,
 						ingredients: selectedIngredients,
 					})
 					.then(() => {
@@ -67,6 +61,7 @@ export default function CreateRecipe() {
 				<div style={{ display: "flex", gap: 15, flexDirection: "column" }}>
 					<TextField id="outlined-name" label="Recipename" value={recipe} onChange={(e: any) => setRecipe(e.target.value)} />
 					<TextField
+						multiline
 						id="outlined-name"
 						label="Ingredients"
 						value={selectedIngredients.map((item: Ingredient) => item.name)}
@@ -75,10 +70,28 @@ export default function CreateRecipe() {
 							let mappedList = values.map((item: string) => {
 								let ingredient = {} as Ingredient;
 								ingredient.name = item;
+								ingredient.amount = 0;
+								ingredient.unit = "amount";
 								return ingredient;
 							});
 
 							setSelectedIngredients(mappedList);
+						}}
+					/>
+					<TextField
+						multiline
+						id="outlined-name"
+						label="Ingredients"
+						value={description.map((item: Description) => item.description)}
+						onChange={(e: any) => {
+							let values = e.target.value.split(",");
+							let mappedList = values.map((item: string) => {
+								let ingredient = {} as Description;
+								ingredient.description = item;
+								return ingredient;
+							});
+
+							setDescription(mappedList);
 						}}
 					/>
 					{/* <FormControl style={{ marginBottom: 10, flex: 1, marginTop: 20 }} fullWidth required>

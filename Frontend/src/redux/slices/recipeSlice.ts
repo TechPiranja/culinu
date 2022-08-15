@@ -1,10 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-
-interface Recipe {
-    id: number;
-    name: string;
-    ingredients: string[]
-}
+import { Recipe } from '../../types/recipe';
 
 export const recipesSlice = createSlice({
     name: 'recipes',
