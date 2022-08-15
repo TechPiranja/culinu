@@ -1,3 +1,4 @@
+using Culinu.Backend.Controllers;
 
 namespace Culinu.Backend
 {
@@ -20,7 +21,8 @@ namespace Culinu.Backend
                 var services = scope.ServiceProvider;
 
                 var context = services.GetRequiredService<CulinuContext>();
-                context.Database.EnsureCreated();
+                await context.Database.EnsureDeletedAsync();
+                await context.Database.EnsureCreatedAsync();
             }
 
             app.UseHttpsRedirection();

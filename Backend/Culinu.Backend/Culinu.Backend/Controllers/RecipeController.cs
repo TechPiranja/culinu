@@ -1,50 +1,96 @@
-using Culinu.Backend.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Culinu.Backend;
+using Culinu.Backend.Models;
 
 namespace Culinu.Backend.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("[controller]")]
     public class RecipeController : ControllerBase
     {
-        private readonly ILogger<RecipeController> _logger;
-        private readonly CulinuContext _culinuContext;
+        private readonly CulinuContext _context;
 
-        public RecipeController(CulinuContext culinuContext
-            , ILogger<RecipeController> logger)
+        public RecipeController(CulinuContext context)
         {
-            _logger = logger;
-            _culinuContext = culinuContext;
+            _context = context;
         }
 
+        // GET: api/Recipe
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RecipeModel>>> Get([FromBody] string Name)
+        public async Task<ActionResult<IEnumerable<RecipeModel>>> GetRecipes()
         {
-            if (string.IsNullOrEmpty(Name))
+            if (_context.Recipes == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-            var recipes = _culinuContext.Recipes?
-                .Where(x => x.Name.ToLower().Contains(Name.ToLower()))
-                .ToList();
-            await _culinuContext.SaveChangesAsync();
-
-            if (recipes != null)
-                return Ok(recipes);
-
-            return BadRequest();
+            return await _context.Recipes.ToListAsync();
         }
 
-        [HttpPost]
-        public async Task<ActionResult<RecipeModel>> Post([FromBody] RecipeModel recipe)
+        // GET: api/Recipe/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<RecipeModel>> GetRecipeModel(int id)
         {
-            if (string.IsNullOrEmpty(recipe.Name) || recipe.Ingredients == null)
-                return BadRequest();
+            if (_context.Recipes == null)
+            {
+                return NotFound();
+            }
+            var recipeModel = await _context.Recipes.FindAsync(id);
 
-            await _culinuContext.AddAsync(recipe);
-            await _culinuContext.SaveChangesAsync();
+            if (recipeModel == null)
+            {
+                return NotFound();
+            }
 
-            return Ok(recipe);
+            return recipeModel;
+        }
+
+        // POST: api/Recipe
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<RecipeModel>> PostRecipeModel(CreateRecipeModel createRecipeModel)
+        {
+            if (_context.Recipes == null)
+            {
+                return Problem("Entity set 'CulinuContext.Recipes'  is null.");
+            }
+
+            var recipeModel = new RecipeModel
+            {
+                IngredientIds = createRecipeModel.IngredientIds,
+                Name = createRecipeModel.Name
+            };
+
+            _context.Recipes.Add(recipeModel);
+              
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetRecipeModel", new { id = recipeModel.Id }, recipeModel);
+        }
+
+        // DELETE: api/Recipe/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRecipeModel(int id)
+        {
+            if (_context.Recipes == null)
+            {
+                return NotFound();
+            }
+            var recipeModel = await _context.Recipes.FindAsync(id);
+            if (recipeModel == null)
+            {
+                return NotFound();
+            }
+
+            _context.Recipes.Remove(recipeModel);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }

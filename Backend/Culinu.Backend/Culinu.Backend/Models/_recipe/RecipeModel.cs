@@ -9,6 +9,6 @@ namespace Culinu.Backend.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; } = default!;
         public string? Name { get; set; } = default!;
-        public IngredientModel[]? Ingredients { get; set; } = default!;
+        public int[]? IngredientIds { get; set; } = default!;
     }
 }
