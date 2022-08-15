@@ -1,4 +1,5 @@
 using Culinu.Backend.Controllers;
+using System.Diagnostics;
 
 namespace Culinu.Backend
 {
@@ -21,7 +22,9 @@ namespace Culinu.Backend
                 var services = scope.ServiceProvider;
 
                 var context = services.GetRequiredService<CulinuContext>();
-                await context.Database.EnsureDeletedAsync();
+                if (Debugger.IsAttached)
+                    await context.Database.EnsureDeletedAsync();
+                
                 await context.Database.EnsureCreatedAsync();
             }
 
