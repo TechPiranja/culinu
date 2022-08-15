@@ -62,7 +62,7 @@ namespace Culinu.Backend.Controllers
 
             var recipeModel = new RecipeModel
             {
-                IngredientIds = createRecipeModel.IngredientIds,
+                Ingredients = createRecipeModel.Ingredients,
                 Name = createRecipeModel.Name
             };
 
