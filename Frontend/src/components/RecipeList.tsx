@@ -10,18 +10,7 @@ import { RootState } from "../redux/store";
 import { updateRecipes, updateSelectedRecipe } from "../redux/slices/recipeSlice";
 import { defaultService } from "../services/api";
 import { useEffect } from "react";
-
-// function renderRow(props: ListChildComponentProps) {
-// 	const { index, style } = props;
-
-// 	return (
-// 		<ListItem style={style} key={index} component="div" disablePadding>
-// 			<ListItemButton>
-// 				<ListItemText primary={`Recipe ${index + 1}`} />
-// 			</ListItemButton>
-// 		</ListItem>
-// 	);
-// }
+import CreateRecipe from "./CreateRecipe";
 
 export default function RecipeList() {
 	const recipes = useSelector((state: RootState) => state.recipes.recipes);
@@ -63,9 +52,10 @@ export default function RecipeList() {
 						// </FixedSizeList>
 					)}
 				</AutoSizer>
-				<Fab color="secondary" aria-label="add" style={{ position: "absolute", bottom: 40, right: 30 }}>
+				<CreateRecipe />
+				{/* <Fab color="secondary" aria-label="add" style={{ position: "absolute", bottom: 40, right: 30 }}>
 					<Add />
-				</Fab>
+				</Fab> */}
 			</CardContent>
 		</Card>
 	);

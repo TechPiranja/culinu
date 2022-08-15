@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import { SnackbarProvider } from "notistack";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
@@ -27,9 +28,11 @@ const theme = createTheme({
 root.render(
 	<React.StrictMode>
 		<Provider store={store}>
-			<ThemeProvider theme={theme}>
-				<App />
-			</ThemeProvider>
+			<SnackbarProvider maxSnack={3}>
+				<ThemeProvider theme={theme}>
+					<App />
+				</ThemeProvider>
+			</SnackbarProvider>
 		</Provider>
 	</React.StrictMode>
 );
