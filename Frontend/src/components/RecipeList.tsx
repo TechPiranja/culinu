@@ -3,7 +3,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 // @ts-ignore
 import AutoSizer from "react-virtualized-auto-sizer";
-import { Card, Typography, CardContent, Fab, List } from "@mui/material";
+import { Card, Typography, CardContent, Divider, List } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
@@ -40,11 +40,14 @@ export default function RecipeList() {
 					{({ height, width }: any) => (
 						<List style={{ height: height, width: width }}>
 							{recipes?.map((recipe, index): any => (
-								<ListItem key={index} component="div" disablePadding>
-									<ListItemButton onClick={() => dispatch(updateSelectedRecipe(recipe))}>
-										<ListItemText primary={`Recipe ${recipe.name}`} />
-									</ListItemButton>
-								</ListItem>
+								<>
+									<ListItem key={index} component="div" disablePadding>
+										<ListItemButton onClick={() => dispatch(updateSelectedRecipe(recipe))}>
+											<ListItemText primary={`Recipe ${recipe.name}`} />
+										</ListItemButton>
+									</ListItem>
+									<Divider />
+								</>
 							))}
 						</List>
 						// <FixedSizeList height={height} width={width} itemSize={46} itemCount={200} overscanCount={5}>
