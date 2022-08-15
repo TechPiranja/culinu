@@ -30,7 +30,7 @@ namespace Culinu.Backend.Controllers
                 return NotFound();
             }
             var section = _context.Recipes.Include(s => s.Ingredients);
-            
+
             return await _context.Recipes
                 .Include(s => s.Ingredients)
                 .ToListAsync();
@@ -63,6 +63,22 @@ namespace Culinu.Backend.Controllers
             {
                 return Problem("Entity set 'CulinuContext.Recipes'  is null.");
             }
+            var ingredients = createRecipeModel.Ingredients;
+
+
+            foreach (var userIngredient in createRecipeModel.Ingredients)
+            {
+                if (!ingredients.Contains(userIngredient))
+                {
+                    var ingredientModel = new IngredientModel
+                    {
+                        Name = userIngredient.Name
+                    };
+
+                    _context.Ingredients?.Add(ingredientModel);
+                    await _context.SaveChangesAsync();
+                }
+            }
 
             var recipeModel = new RecipeModel
             {
@@ -71,7 +87,7 @@ namespace Culinu.Backend.Controllers
             };
 
             _context.Recipes.Add(recipeModel);
-              
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetRecipeModel", new { id = recipeModel.Id }, recipeModel);
