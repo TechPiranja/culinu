@@ -1,3 +1,10 @@
+# Colors:
+#6f6ffb
+#0eec94
+#5df1b6
+#acf6d9
+#fcfcfc
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
