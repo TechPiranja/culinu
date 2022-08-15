@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Culinu.Backend;
 using Culinu.Backend.Models;
 
 namespace Culinu.Backend.Controllers
@@ -72,19 +66,30 @@ namespace Culinu.Backend.Controllers
                 {
                     var ingredientModel = new IngredientModel
                     {
-                        Name = userIngredient.Name
+                        Name = userIngredient.Name,
+                        Unit = userIngredient.Unit,
+                        Amount = userIngredient.Amount
                     };
 
                     _context.Ingredients?.Add(ingredientModel);
                     await _context.SaveChangesAsync();
                 }
             }
+            RecipeModel recipeModel;
 
-            var recipeModel = new RecipeModel
-            {
-                Ingredients = createRecipeModel.Ingredients,
-                Name = createRecipeModel.Name
-            };
+            if (createRecipeModel.Descriptions != null)
+                recipeModel = new RecipeModel
+                {
+                    Ingredients = createRecipeModel.Ingredients,
+                    Name = createRecipeModel.Name,
+                    Descriptions = createRecipeModel.Descriptions
+                };
+            else
+                recipeModel = new RecipeModel
+                {
+                    Ingredients = createRecipeModel.Ingredients,
+                    Name = createRecipeModel.Name
+                };
 
             _context.Recipes.Add(recipeModel);
 
@@ -102,6 +107,7 @@ namespace Culinu.Backend.Controllers
                 return NotFound();
             }
             var recipeModel = await _context.Recipes.FindAsync(id);
+
             if (recipeModel == null)
             {
                 return NotFound();

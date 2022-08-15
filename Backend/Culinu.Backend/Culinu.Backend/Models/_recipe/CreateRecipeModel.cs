@@ -7,5 +7,6 @@ namespace Culinu.Backend.Models
     {
         public string? Name { get; set; } = default!;
         public ICollection<IngredientModel> Ingredients { get; set; } = default!;
+        public ICollection<RecipeDescription> Descriptions { get; set; } = default!;
     }
 }

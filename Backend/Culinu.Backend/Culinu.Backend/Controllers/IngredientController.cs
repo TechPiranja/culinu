@@ -25,10 +25,10 @@ namespace Culinu.Backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<IngredientModel>>> GetIngredients()
         {
-          if (_context.Ingredients == null)
-          {
-              return NotFound();
-          }
+            if (_context.Ingredients == null)
+            {
+                return NotFound();
+            }
             return await _context.Ingredients.ToListAsync();
         }
 
@@ -36,10 +36,10 @@ namespace Culinu.Backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<IngredientModel>> GetIngredientModel(int id)
         {
-          if (_context.Ingredients == null)
-          {
-              return NotFound();
-          }
+            if (_context.Ingredients == null)
+            {
+                return NotFound();
+            }
             var ingredientModel = await _context.Ingredients.FindAsync(id);
 
             if (ingredientModel == null)
@@ -55,14 +55,16 @@ namespace Culinu.Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<CreateIngredientModel>> PostIngredientModel(CreateIngredientModel createIngredientModel)
         {
-          if (_context.Ingredients == null)
-          {
-              return Problem("Entity set 'CulinuContext.Ingredients'  is null.");
-          }
+            if (_context.Ingredients == null)
+                return Problem("Entity set 'CulinuContext.Ingredients'  is null.");
+            if (string.IsNullOrEmpty(createIngredientModel.Name))
+                return Problem("Name is not allowed to be null");
 
             var ingredientModel = new IngredientModel
             {
-                Name = createIngredientModel.Name
+                Name = createIngredientModel.Name,
+                Amount = createIngredientModel.Amount,
+                Unit = createIngredientModel.Unit
             };
 
             _context.Ingredients.Add(ingredientModel);

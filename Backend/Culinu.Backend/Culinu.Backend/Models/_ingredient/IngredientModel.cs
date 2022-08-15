@@ -8,6 +8,8 @@ namespace Culinu.Backend.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; } = default!;
-        public string? Name { get; set; } = default!;
+        public string Name { get; set; } = default!;
+        public int? Amount { get; set; }
+        public string? Unit { get; set; }
     }
 }

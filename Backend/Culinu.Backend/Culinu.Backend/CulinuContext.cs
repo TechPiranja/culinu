@@ -19,7 +19,10 @@ namespace Culinu.Backend
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IngredientModel>().ToTable("Ingredient");
-            modelBuilder.Entity<RecipeModel>().ToTable("Recipe").HasMany(x => x.Ingredients);
+            modelBuilder.Entity<RecipeDescription>().ToTable("RecipeDescription");
+            modelBuilder.Entity<RecipeModel>().HasMany(x => x.Ingredients);
+            modelBuilder.Entity<RecipeModel>().ToTable("Recipe").HasMany(x => x.Descriptions);
+           
         }
     }
 }
