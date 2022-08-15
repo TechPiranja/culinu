@@ -25,7 +25,11 @@ namespace Culinu.Backend
                 await context.Database.EnsureCreatedAsync();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
             app.UseAuthorization();
             app.MapControllers();
             await app.RunAsync();

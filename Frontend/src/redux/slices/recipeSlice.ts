@@ -3,12 +3,13 @@ import { createSlice } from '@reduxjs/toolkit'
 interface Recipe {
     id: number;
     name: string;
+    ingredients: string[]
 }
 
 export const recipesSlice = createSlice({
     name: 'recipes',
     initialState: {
-        recipes: [{ name: 'test' }, { name: 'dsfs' }] as Recipe[],
+        recipes: [] as Recipe[],
         selectedRecipe: {} as Recipe
     },
     reducers: {

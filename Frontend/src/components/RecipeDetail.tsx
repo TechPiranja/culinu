@@ -22,10 +22,17 @@ export default function RecipeDetail() {
 				>
 					{selectedRecipe.name}
 				</Typography>
-				<div style={{ margin: 10 }}>
-					<Typography>Ingredients:</Typography>
-					<Typography>Description:</Typography>
-				</div>
+				{!selectedRecipe.name?.length ? (
+					<Typography style={{ margin: 10, textAlign: "center", color: "grey" }}>No recipe selected</Typography>
+				) : (
+					<div style={{ margin: 10 }}>
+						<Typography style={{ fontWeight: "bold" }}>Ingredients:</Typography>
+						{selectedRecipe.ingredients.map((item: any) => (
+							<Typography>{item.name}</Typography>
+						))}
+						{/* <Typography>Description:</Typography> */}
+					</div>
+				)}
 			</CardContent>
 		</Card>
 	);

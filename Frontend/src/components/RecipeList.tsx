@@ -1,14 +1,15 @@
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import { FixedSizeList, ListChildComponentProps } from "react-window";
 // @ts-ignore
 import AutoSizer from "react-virtualized-auto-sizer";
 import { Card, Typography, CardContent, Fab, List } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { updateSelectedRecipe } from "../redux/slices/recipeSlice";
+import { updateRecipes, updateSelectedRecipe } from "../redux/slices/recipeSlice";
+import { defaultService } from "../services/api";
+import { useEffect } from "react";
 
 // function renderRow(props: ListChildComponentProps) {
 // 	const { index, style } = props;
@@ -25,6 +26,10 @@ import { updateSelectedRecipe } from "../redux/slices/recipeSlice";
 export default function RecipeList() {
 	const recipes = useSelector((state: RootState) => state.recipes.recipes);
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		defaultService.getPrimitive("Recipe").then((result: any) => dispatch(updateRecipes(result.data)));
+	}, []);
 
 	return (
 		<Card sx={{ minWidth: 275, width: "30%" }}>
