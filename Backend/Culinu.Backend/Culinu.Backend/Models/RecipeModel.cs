@@ -1,9 +1,14 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Culinu.Backend.Models
 {
     public class RecipeModel
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public List<IngredientModel>? Ingredients { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; } = default!;
+        public string? Name { get; set; } = default!;
+        public IngredientModel[]? Ingredients { get; set; } = default!;
     }
 }
