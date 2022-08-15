@@ -2,6 +2,7 @@ import "./App.css";
 import TitleBar from "./components/TitleBar";
 import { Box, Toolbar } from "@mui/material";
 import RecipeList from "./components/RecipeList";
+import RecipeDetail from "./components/RecipeDetail";
 
 function App() {
 	return (
@@ -10,6 +11,7 @@ function App() {
 			<Toolbar />
 			<Box component="main" sx={{ p: 3, flex: 1, height: "100%", display: "flex", flexDirection: "row", gap: 3 }}>
 				<RecipeList />
+				<RecipeDetail />
 			</Box>
 		</Box>
 	);
