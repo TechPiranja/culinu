@@ -29,8 +29,8 @@ export default function RecipeDetail() {
 						<div>
 							<Typography style={{ fontWeight: "bold" }}>Ingredients:</Typography>
 							<ul>
-								{selectedRecipe.ingredients.map((item: any) => (
-									<li>
+								{selectedRecipe.ingredients.map((item, index): any => (
+									<li key={index}>
 										<Typography>{item.amount + " " + item.unit + " " + item.name}</Typography>
 									</li>
 								))}
@@ -39,8 +39,8 @@ export default function RecipeDetail() {
 						<div>
 							<Typography style={{ fontWeight: "bold" }}>Description:</Typography>
 							<ol>
-								{selectedRecipe?.descriptions?.map((item): any => (
-									<li>
+								{selectedRecipe?.descriptions?.map((item, index): any => (
+									<li key={index}>
 										<Typography>{item.description}</Typography>
 									</li>
 								))}

@@ -40,14 +40,14 @@ export default function RecipeList() {
 					{({ height, width }: any) => (
 						<List style={{ height: height, width: width }}>
 							{recipes?.map((recipe, index): any => (
-								<>
-									<ListItem key={index} component="div" disablePadding>
+								<div key={index}>
+									<ListItem component="div" disablePadding>
 										<ListItemButton onClick={() => dispatch(updateSelectedRecipe(recipe))}>
 											<ListItemText primary={`Recipe ${recipe.name}`} />
 										</ListItemButton>
 									</ListItem>
 									<Divider />
-								</>
+								</div>
 							))}
 						</List>
 						// <FixedSizeList height={height} width={width} itemSize={46} itemCount={200} overscanCount={5}>
