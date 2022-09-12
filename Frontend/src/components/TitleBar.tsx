@@ -11,11 +11,14 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Logo from "./../assets/logo.png";
 import { defaultService } from "../services/api";
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Divider } from "@mui/material";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const TitleBar = () => {
+	const [open, setOpen] = React.useState(false);
+	const [selectedRecipe, setSelectedRecipe] = React.useState<any>({});
 	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 	const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -35,7 +38,8 @@ const TitleBar = () => {
 	};
 
 	function handleShuffle() {
-		defaultService.getPrimitive("Recipe/random").then((result: any) => alert(result.data.name));
+		defaultService.getPrimitive("Recipe/random").then((result: any) => setSelectedRecipe(result.data));
+		setOpen(true);
 	}
 
 	return (
@@ -83,6 +87,22 @@ const TitleBar = () => {
 							Shuffle!
 						</Button>
 					</Box>
+					<Dialog open={open} onClose={() => setOpen(false)}>
+						<DialogTitle>{"Randomly picked recipe!"}</DialogTitle>
+						<Divider />
+						<DialogContent>
+							<DialogContentText style={{ textAlign: "center", margin: 20, fontSize: 35, fontWeight: "bold" }}>
+								{selectedRecipe?.name ?? ""}
+								{/* <p>{selectedRecipe?.ingredients ?? ""}</p> */}
+							</DialogContentText>
+						</DialogContent>
+						<Divider />
+						<DialogActions>
+							<Button onClick={() => setOpen(false)} autoFocus>
+								Ok
+							</Button>
+						</DialogActions>
+					</Dialog>
 				</Toolbar>
 			</Container>
 		</AppBar>
