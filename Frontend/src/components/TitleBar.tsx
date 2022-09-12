@@ -10,6 +10,7 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Logo from "./../assets/logo.png";
+import { defaultService } from "../services/api";
 
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -33,9 +34,13 @@ const TitleBar = () => {
 		setAnchorElUser(null);
 	};
 
+	function handleShuffle() {
+		defaultService.getPrimitive("Recipe/random").then((result: any) => alert(result.data.name));
+	}
+
 	return (
 		<AppBar component="nav">
-			<Container maxWidth="xl">
+			<Container maxWidth={false}>
 				<Toolbar disableGutters style={{ justifyContent: "center" }}>
 					{/* <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
 						{/* <IconButton size="large" aria-label="account of current user" aria-controls="menu-appbar" aria-haspopup="true" onClick={handleOpenNavMenu} color="inherit">
@@ -67,13 +72,17 @@ const TitleBar = () => {
 						</Menu> 
 					</Box> */}
 					<img src={Logo} alt="logo" width="150" />
-					{/* <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-						{pages.map((page) => (
+					<Box style={{ right: 10, position: "absolute" }} sx={{ display: { xs: "none", md: "flex" } }}>
+						{/* {pages.map((page) => (
 							<Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: "white", display: "block" }}>
 								{page}
 							</Button>
-						))}
-					</Box> */}
+						))} */}
+
+						<Button onClick={handleShuffle} sx={{ my: 2, color: "white", display: "block" }}>
+							Shuffle!
+						</Button>
+					</Box>
 				</Toolbar>
 			</Container>
 		</AppBar>

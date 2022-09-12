@@ -25,9 +25,28 @@ namespace Culinu.Backend.Controllers
             }
 
             return _context.Recipes
-                .Include(x => x.Ingredients)
-                .Include(x => x.Descriptions.OrderBy(x => x.Id))
-                .ToList();
+            .Include(x => x.Ingredients)
+            .Include(x => x.Descriptions.OrderBy(x => x.Id))
+            .ToList();
+        }
+
+        [HttpGet("random")]        
+        public async Task<ActionResult<RecipeModel>> GetRandomRecipe()
+        {
+            if (_context.Recipes == null)
+            {
+                return NotFound();
+            }
+
+            var rand = new Random();
+            int skipper = rand.Next(0, _context.Recipes.Count());
+     
+            return _context.Recipes
+            .Include(x => x.Ingredients)
+            .Include(x => x.Descriptions.OrderBy(x => x.Id))
+            .Skip(skipper)
+            .Take(1)
+            .First();
         }
 
         // GET: api/Recipe/5

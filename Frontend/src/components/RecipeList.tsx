@@ -43,7 +43,7 @@ export default function RecipeList() {
 								<div key={index}>
 									<ListItem component="div" disablePadding>
 										<ListItemButton onClick={() => dispatch(updateSelectedRecipe(recipe))}>
-											<ListItemText primary={`Recipe ${recipe.name}`} />
+											<ListItemText primary={recipe.name} />
 										</ListItemButton>
 									</ListItem>
 									<Divider />
