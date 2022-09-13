@@ -1,0 +1,1 @@
+certbot certonly --manual -d '*.js-ework.de' -d 'js-ework.de' --text --agree-tos --email zenamosandro@gmail.com --server https://acme-v02.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --keep-until-expiring --preferred-challenges=dns

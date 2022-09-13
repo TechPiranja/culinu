@@ -1,0 +1,83 @@
+version: '3.7'
+services:
+  letsencrypt:
+     image: letsencrypt
+     restart: always
+     volumes:
+       - letsencrypt:/etc/letsencrypt/
+  database:
+     image: postgres:latest
+     restart: always
+     expose:
+       - "5432"
+     environment:
+         POSTGRES_PASSWORD: 616_c84-490x4d383-246c0!d294fd6ej5f
+     volumes:
+       - pgdata:/var/lib/postgresql/data
+  mqtt:
+     image: mqtt
+     restart: always
+     ports:
+       - ${PUBLIC_SERVICE_IP}:1883:1883
+       - ${PUBLIC_SERVICE_IP}:8444:8444
+     expose:
+       - "80"
+       - "443"
+     environment:
+        Mqtt__TokenValidation__Key: 5ec2697c97e0476ba47493a5faa25ef1
+        Mqtt__TokenValidation__Issuer: ZENAMO
+        Mqtt__TokenValidation__Audience: ZENAMO
+        Mqtt__BackendAuthentication__Username: backend
+        Mqtt__BackendAuthentication__Password: 89282d58596943f1a9553a81823807c6
+        Mqtt__Certificate__Path: /etc/letsencrypt/live/js-ework.de/fullchain.pem
+        Mqtt__Certificate__KeyPath: /etc/letsencrypt/live/js-ework.de/privkey.pem
+        ASPNETCORE_URLS: https://+;http://+
+     volumes:
+       - letsencrypt:/etc/letsencrypt/
+  backend:
+     image: backend
+     restart: always
+     expose:
+       - "80"
+       - "443"
+     links:
+       - database
+     depends_on:
+       - database
+     environment:
+        Database__Host: database
+        Database__User: postgres
+        Database__Password: 616_c84-490x4d383-246c0!d294fd6ej5f
+        Mqtt__Host: mqtt
+        Mqtt__Username: backend
+        Mqtt__Password: 89282d58596943f1a9553a81823807c6
+        ASPNETCORE_URLS: https://+;http://+
+        Certificate__Path: /etc/letsencrypt/live/js-ework.de/fullchain.pem
+        Certificate__KeyPath: /etc/letsencrypt/live/js-ework.de/privkey.pem
+     volumes:
+       - letsencrypt:/etc/letsencrypt/
+  frontend:
+     image: frontend
+     restart: always
+     expose:
+       - "3000"
+     links:
+       - backend
+     depends_on:
+       - backend
+  webserver:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - letsencrypt:/etc/letsencrypt/
+    depends_on:
+      - backend
+      - frontend
+    ports:
+      - ${PUBLIC_SERVICE_IP}:80:80
+      - ${PUBLIC_SERVICE_IP}:443:443
+volumes:
+  pgdata:
+  certs:
+  letsencrypt:

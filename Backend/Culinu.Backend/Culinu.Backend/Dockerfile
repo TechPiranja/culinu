@@ -7,7 +7,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Culinu.Backend/Culinu.Backend.csproj", "Culinu.Backend/"]
+COPY ["/Culinu.Backend/Culinu.Backend.csproj", "Culinu.Backend/"]
 RUN dotnet restore "Culinu.Backend/Culinu.Backend.csproj"
 COPY . .
 WORKDIR "/src/Culinu.Backend"
@@ -19,4 +19,5 @@ RUN dotnet publish "Culinu.Backend.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
 ENTRYPOINT ["dotnet", "Culinu.Backend.dll"]

@@ -1,0 +1,46 @@
+
+--- authentication
+
+users access the page via a subdomain
+FE acknowledges this subdomain and uses it as tenant information to pass to backend
+BE retrieves the tenant information initially with authentication
+ -> Authentication is done via comparing usernames and hashed password
+ -> Database is resolved via the tenant id
+ -> BE replies with the authenticated user and their access rights
+ -> from now on only jwt is used, it includes the tenant information
+ -> BE shares tenant information and other rights via claims in jwt
+FE can now show a main page with respectively limited items (how many modules etc.)
+Users can edit data and server can reject edits if rights do not fit
+
+--- docker
+Navigate to Installation Folder
+
+
+Build
+docker compose build
+Run
+docker compose run
+Save
+docker image save repository:tag -o FILE
+docker image save culinu.backend:latest -o "path\Export"
+
+docker image save culinu.backend -o "path/backend.tar"
+
+Load
+docker image load -i "path\culinu.backend.tar"
+
+Delete all containers and their volumes
+docker rm -vf $(docker ps -aq)
+
+Delete all images
+docker rmi -f $(docker images -aq)
+
+Delete all
+docker system prune -a -f
+
+Workflow:
+- create images on dev system with compose
+- export single images
+- move via ftp to server
+- with cli load images on server
+- compose up

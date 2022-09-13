@@ -1,0 +1,54 @@
+version: '3.7'
+services:
+  database:
+     image: postgres:latest
+     restart: always
+     expose:
+       - "5432"
+     environment:
+         POSTGRES_PASSWORD: 616_c84-490x4d383-246c0!dsdfg3245f
+     volumes:
+       - pgdata:/var/lib/postgresql/data
+  backend:
+     image: culinu.backend
+     build:
+       context: ../Backend/Culinu.Backend/.
+       dockerfile: Culinu.Backend/Dockerfile
+     expose:
+       - "80"
+       - "443"
+     restart: always
+     links:
+       - database
+     depends_on:
+       - database
+     environment:
+        Database__Host: database
+        Database__User: postgres
+        Database__Password: 616_c84-490x4d383-246c0!dsdfg3245f
+        ASPNETCORE_URLS: https://+;http://+
+  frontend:
+     image: culinu.frontend
+     build:
+       context: ../Frontend/.
+       dockerfile: Dockerfile
+     restart: always
+     expose:
+       - "3000"
+     links:
+       - backend
+     depends_on:
+       - backend
+  webserver:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+      - frontend
+    ports:
+      - ${PUBLIC_SERVICE_IP}:80:80
+      - ${PUBLIC_SERVICE_IP}:443:443
+volumes:
+  pgdata:
