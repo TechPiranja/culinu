@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 let url = new URL(window.location.origin);
-url.port = (url.protocol === 'http:' ? 5078 : 7078).toString();
+url.port = (url.protocol === 'http:' ? 8080 : 443).toString();
 const baseURL = url + 'api/';
 
 const instance = axios.create({
